@@ -12,9 +12,15 @@
 
 </head>
 
-<body>
+<body class="bg-body-secondary">
     <x-navbar />
     <div class="min-vh-100">
+
+        @if (session()->has('errorMessage'))
+            <div class="d-flex justify-content-center my-2 alert alert-danger">
+                {{ session('errorMessage') }}
+            </div>
+        @endif
         {{ $slot }}
     </div>
 </body>

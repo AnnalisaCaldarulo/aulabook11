@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -18,11 +19,24 @@ class BookController extends Controller implements HasMiddleware
             new Middleware('auth', only: ['create']),
         ];
     }
- 
-     
+
+    public function downloadBook(Book $book)
+    {
+        if (file_exists(storage_path('app/' . $book->pdf))) {
+            return Storage::download($book->pdf);
+        } else {
+            return redirect()->route('homepage')->with('errorMessage', 'Il file non è più presente');
+        }
+    }
+
+    public function viewPdf(Book $book)
+    {
+        return view('book.viewPdf', compact('book'));
+    }
     public function index()
     {
-        //
+        $books = Book::paginate(6);
+        return view('book.index', compact('books'));
     }
 
     /**
@@ -46,7 +60,7 @@ class BookController extends Controller implements HasMiddleware
      */
     public function show(Book $book)
     {
-        //
+        return view('book.show', compact('book'));
     }
 
     /**

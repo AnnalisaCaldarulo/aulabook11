@@ -20,15 +20,7 @@
         <div class="row justify-content-center">
             @forelse($books as $book)
                 <div class="col-12 col-md-4 d-flex justify-content-center mt-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="https://picsum.photos/512/512" class="card-img-top" alt="Immsgine picsum">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $book->title }}</h5>
-                            <p class="card-text">{{ $book->getDescriptionSubstring() }}</p>
-                            <p class="card-text">Pubblicato da: {{ $book->user->name }}</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+                    <x-book-card :book="$book" />
                 </div>
             @empty
                 <h2 class="text-center">
