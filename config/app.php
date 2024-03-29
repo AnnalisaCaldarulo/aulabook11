@@ -122,5 +122,6 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
+    'open_ai_key' => env('OPEN_AI_KEY'),
+    'open_ai_size' => env('OPEN_AI_SIZE' , '512x512'),
 ];
