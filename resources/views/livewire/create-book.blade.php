@@ -51,6 +51,19 @@
                          <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                      @enderror
                  </div>
+                 {{-- categoria US 5 --}}
+                 <div class="mb-3">
+                     <label for="inputCategory" class="form-label">Categoria</label>
+                     <select name="inputCategory" id="inputCategory" name="selectedCategory"
+                         wire:model="selectedCategory" class="form-control">
+                         @foreach ($categories as $category)
+                             <option value="{{ $category->id }}">{{ $category->name }}</option>
+                         @endforeach
+                     </select>
+                     @error('pdf')
+                         <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                     @enderror
+                 </div>
                  <div class="mb-3">
                      <label id="pdfId" class="form-label">Carica il tuo PDF</label>
                      <input type="file" class="form-control @error('pdf') is-invalid @enderror" wire:model="pdf"
@@ -127,19 +140,7 @@
                              class="btn btn-danger mt-2">{{ $cover ? 'Rigenera' : 'Genera' }}</button>
                      </div>
                  </div>
-                 {{-- categoria US 5 --}}
-                 {{-- <div class="mb-3">
-                    <label for="inputCategory" class="form-label">Categoria</label>
-                    <select name="inputCategory" id="inputCategory" name="selectedCategory"
-                        wire:model="selectedCategory" class="form-control">
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('pdf')
-                        <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
-                    @enderror
-                </div> --}}
+                 
              </form>
          </div>
      </div>
@@ -157,7 +158,8 @@
              </div>
          @endif
          <x-preview-card title="{{ $title }}" description="{{ $description }}" cover="{{ $cover }}"
-             author="{{ Auth::user()->name }}" {{-- category="{{$category->name}}" --}} url="#" />
+             author="{{ Auth::user()->name }}" category="{{ $categories->find($selectedCategory)?->name }}"
+             url="#" />
      </div>
      <div class="container">
          <div class="row justify-content-center">

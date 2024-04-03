@@ -17,6 +17,7 @@ class CreateBook extends Component
     public $description;
     #[Validate('required|file|mimes:pdf')]
     public $pdf;
+    #[Validate('required')]
     public $selectedCategory;
     #[Validate('required')]
     public $cover;
@@ -67,6 +68,7 @@ class CreateBook extends Component
                 'title' => 'required',
                 'description' => 'required',
                 'pdf' => 'required',
+                'selectedCategory' => 'required',
             ], $this->messages());
 
             $this->step++;

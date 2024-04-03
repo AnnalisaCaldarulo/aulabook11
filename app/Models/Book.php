@@ -23,7 +23,8 @@ class Book extends Model
         'description',
         'pdf',
         'user_id',
-        'category_id', 'cover'
+        'category_id', 
+        'cover'
     ];
 
 

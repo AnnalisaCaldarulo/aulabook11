@@ -5,6 +5,7 @@
             <div class="card-body">
                 <h4 class="card-title mt-0 ">{!! $title !!}</h4>
                 <small>{!! $description !!}</small>
+                <h6>{{$category}}</h6>
             </div>
             <div class="card-footer">
                 <div class="media">
