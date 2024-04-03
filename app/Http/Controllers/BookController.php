@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controllers\Middleware;
@@ -29,6 +30,10 @@ class BookController extends Controller implements HasMiddleware
         }
     }
 
+    public function indexCategory(Category $category)
+    {
+        return view('book.indexCategory', compact('category'));
+    }
     public function viewPdf(Book $book)
     {
         return view('book.viewPdf', compact('book'));

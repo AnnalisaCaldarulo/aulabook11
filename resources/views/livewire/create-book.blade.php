@@ -106,16 +106,28 @@
                  </div>
 
                  {{-- Input categoria default --}}
+
                  <div class="mb-3">
                      <label for="idSubject" class="form-label">Soggetto principale*</label>
                      <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby=""
                          wire:model="subject" cols="30" rows="5"></textarea>
                  </div>
+                 {{-- ! DOPO LA MODIFICA DI AMBIENCE->TOPIC --}}
                  <div class="mb-3">
+                     <label for="idSubject"
+                         class="form-label">{{ $isDidactics_nonFiction ? 'Argomento/descrizione *' : 'Ambientazione *' }}</label>
+                     <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby=""
+                         wire:model="topic" cols="30" rows="5"
+                         placeholder="{{ $isDidactics_nonFiction ? 'Descrivi brevemente l\'argomento del tuo libro' : 'Descrivi brevemente l\'ambientazione del tuo libro' }}"></textarea>
+                 </div>
+
+                 {{--
+                    !PRIMA DELLA MODIFICA DI AMBIENCE->TOPIC
+                     <div class="mb-3">
                      <label for="idAmbience" class="form-label">Ambientazione*</label>
                      <textarea class="form-control @error('ambience') is-invalid @enderror" id="idAmbience" aria-describedby=""
                          wire:model="ambience" cols="30" rows="5"></textarea>
-                 </div>
+                 </div> --}}
                  <div class="mb-3">
                      <label for="idOtherDetails" class="form-label">Altri dettagli</label>
                      <textarea class="form-control @error('otherDetails') is-invalid @enderror" id="idOtherDetails" aria-describedby=""
@@ -140,7 +152,7 @@
                              class="btn btn-danger mt-2">{{ $cover ? 'Rigenera' : 'Genera' }}</button>
                      </div>
                  </div>
-                 
+
              </form>
          </div>
      </div>

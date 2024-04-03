@@ -15,6 +15,6 @@ Route::get('/show/book/{book}', [BookController::class, 'show'])->name('book.sho
 Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->name('book.download');
 //visua
 Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.viewPdf');
-
+Route::get('/index/book/category/{category}', [BookController::class, 'indexCategory'])->name('book.category');
 //commenti
 Route::post('/books/{book}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');

@@ -24,6 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $book->title }}</h5>
                         <p class="card-text">{{ $book->description }}</p>
+                        <a href="{{ route('book.category', ['category' => $book->category]) }}"></a>
                         <a href="{{ route('book.viewPdf', compact('book')) }}"
                             class="btn btn-primary w-100 mb-2 d-none d-sm-block">Visualizza</a>
                         <a href="{{ Storage::url($book->pdf) }}"
