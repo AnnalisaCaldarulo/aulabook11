@@ -3,11 +3,14 @@
 namespace App\Livewire;
 
 use App\Models\Book;
-use App\Models\Category;
 use Livewire\Component;
+use App\Models\Category;
 use Livewire\WithFileUploads;
+use App\Models\GeneratedImage;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Jobs\GenerateOpenAiCoverImageJob;
 
 class CreateBook extends Component
 {
@@ -38,6 +41,11 @@ class CreateBook extends Component
 
     public $isDidactics_nonFiction = false;
     public $isOtherCategory = false;
+
+    //US 12
+
+    public $generatedImage;
+    public $isGeneratingImage = false;
 
     public function messages()
     {
@@ -123,8 +131,39 @@ class CreateBook extends Component
         // the book main color is: $this->mainColor";
 
         $this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
-        $this->cover = Book::generateImage($this->cover, $this->promptToken);
+        // $this->cover = Book::generateImage($this->cover, $this->promptToken);
+
+        if ($this->generatedImage) {
+            Storage::disk('public')->delete($this->generatedImage->image);
+            $this->generatedImage->delete();
+            $this->generatedImage = null;
+        }
+
+        // Creazione del nuovo oggett GeneratedImage e sua memorizzaizione
+        $this->generatedImage = GeneratedImage::create([
+            'prompt' => $this->promptToken,
+        ]);
+
+        dispatch(new GenerateOpenAiCoverImageJob($this->generatedImage));
+        $this->isGeneratingImage = true;
     }
+
+    public function checkGeneratedImage()
+    {
+        if ($this->generatedImage->error) {
+            $this->isGeneratingImage = false;
+
+            session()->flash('errorMessage', $this->generatedImage->error);
+            $this->generatedImage = null;
+            return;
+        }
+
+        if ($this->generatedImage->image) {
+            $this->cover = $this->generatedImage->image;
+            $this->isGeneratingImage = false;
+        }
+    }
+
     public function saveBook()
     {
         // Validate
