@@ -23,6 +23,7 @@
         @endif
         {{ $slot }}
     </div>
+    <x-footer />
 </body>
 
 </html>

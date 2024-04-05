@@ -27,7 +27,9 @@ class Book extends Model
         'user_id',
         'category_id',
         'cover',
-        'price'
+        'price',
+        'is_published',
+        'review_status',
     ];
 
 

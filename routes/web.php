@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RevisorController;
 
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 
@@ -24,3 +25,10 @@ Route::post('/books/{book}/comments', [CommentController::class, 'store'])->midd
 Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
 Route::get('/checkout/success/{purchasedBook}', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/checkout/cancel/{purchasedBook}', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
+
+//revisor
+Route::get('/rendi-revisore/{user}', [RevisorController::class, 'makeRevisor'])->name('make.revisor');
+Route::get('/diventa-revisore', [RevisorController::class, 'becomeRevisor'])->middleware('auth')->name('become.revisor');
+Route::get('/revisor/home' , [RevisorController::class, 'index'])->name('revisor.index');
+// Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name('response.review');

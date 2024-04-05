@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\PurchasedBook;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -26,17 +27,31 @@ class User extends Authenticatable
         'password',
     ];
 
+
+    public function isRevisor()
+    {
+        return $this->role_id == 2;
+    }
+    public function isAdmin()
+    {
+        return $this->role_id == 1;
+    }
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);
     }
 
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
-    
+
     public function purchasedBooks(): HasMany
     {
         return $this->hasMany(PurchasedBook::class);

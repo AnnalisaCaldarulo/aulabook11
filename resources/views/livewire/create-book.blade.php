@@ -188,6 +188,16 @@
          <x-preview-card title="{{ $title }}" description="{{ $description }}" cover="{{ $cover }}"
              author="{{ Auth::user()->name }}" category="{{ $categories->find($selectedCategory)?->name }}"
              url="#" />
+
+         <div class="col-12 mt-5 d-flex justify-content-center">
+             <div class="form-check form-switch">
+                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                     wire:model="askReview">
+                 <label class="form-check-label" for="flexSwitchCheckDefault">Richiedi recensione</label>
+                 <a href=""data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                         class="ms-2 bi bi-info-circle text-dark"></i></a>
+             </div>
+         </div>
      </div>
      <div class="container">
          <div class="row justify-content-center">
@@ -203,6 +213,28 @@
                          <button type="submit" class=" {{ $step == 3 ? '' : 'd-none' }} btn btn-info">Inserisci
                              eBook</button>
                      </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     {{-- Modale di info --}}
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h1 class="modal-title fs-5" id="exampleModalLabel"><i
+                             class="me-2 bi bi-info-circle text-white"></i>Info Revisione</h1>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                     <p>Il team di AulaBook leggerà la tua pubblicazione. Riceverai al più presto pareri e consigli da
+                         parte di un esperto. Ti ricordiamo che la pubblicazione dell' ebook è indipendente dalla nostra
+                         recensione e lasciamo all'utente ogni libertà d'esepressione.</p>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                  </div>
              </div>
          </div>

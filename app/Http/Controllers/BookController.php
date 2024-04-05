@@ -40,7 +40,7 @@ class BookController extends Controller implements HasMiddleware
     }
     public function index()
     {
-        $books = Book::paginate(6);
+        $books = Book::where('is_published', true)->orderBy('created_at', 'desc')->paginate(6);
         return view('book.index', compact('books'));
     }
 

@@ -42,6 +42,9 @@ class CreateBook extends Component
     ];
 
 
+    public $askReview = false;
+
+
     public $isDidactics_nonFiction = false;
     public $isOtherCategory = false;
 
@@ -183,6 +186,8 @@ class CreateBook extends Component
                 'category_id' => $this->selectedCategory,
                 'cover' => $this->cover ?? 'header-image.png',
                 'price' => $this->price,
+                'is_published' => !$this->askReview,
+                'review_status' => $this->askReview ? 'pending' : 'completed',
             ]
         );
         return redirect()->route('homepage')->with('message', 'eBook inserito correttamente');

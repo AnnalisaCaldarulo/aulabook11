@@ -56,6 +56,12 @@
                         </form>
                         <li><a class="dropdown-item" href="{{ route('book.create') }}">Crea</a></li>
 
+                        @if (Auth::user()->isRevisor() || Auth::user()->isAdmin())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('revisor.index') }}">Zona Revisore</a>
+                            </li>
+                        @endif
+
                     </ul>
                 </li>
             @endauth
