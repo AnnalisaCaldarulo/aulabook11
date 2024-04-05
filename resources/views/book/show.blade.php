@@ -25,18 +25,44 @@
                         <h5 class="card-title">{{ $book->title }}</h5>
                         <p class="card-text">{{ $book->description }}</p>
                         <a href="{{ route('book.category', ['category' => $book->category]) }}"></a>
-                        <a href="{{ route('book.viewPdf', compact('book')) }}"
-                            class="btn btn-primary w-100 mb-2 d-none d-sm-block">Visualizza</a>
-                        <a href="{{ Storage::url($book->pdf) }}"
-                            class="btn btn-primary w-100 mb-2 d-block d-sm-none">Visualizza</a>
-                        <a href="{{ route('book.download', compact('book')) }}" class="btn btn-primary">Scarica</a>
+                        @auth
+                            <a href="{{ route('book.viewPdf', compact('book')) }}"
+                                class="btn btn-primary w-100 mb-2 d-none d-sm-block">Visualizza</a>
+                            <a href="{{ Storage::url($book->pdf) }}"
+                                class="btn btn-primary w-100 mb-2 d-block d-sm-none">Visualizza</a>
+                            <a href="{{ route('book.download', compact('book')) }}" class="btn btn-primary">Scarica</a>
+                        @endauth
                         <a href="{{ route('book.index') }}" class="btn btn-primary">Torna indietro</a>
                     </div>
                 </div>
+
             </div>
+            @auth
+
+                @if (!$book->isBookPurchased() && !$book->isBookAuthor())
+                    <div class="mt-3 col-12 col-md-auto">
+                        <form method="POST" action="{{ route('checkout', compact('book')) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-success w-100 mb-2">
+                                @if ($book->price == 0)
+                                    Aggiungi alla tua libreria
+                                @else
+                                    Acquista {{ $book->price }} €
+                                @endif
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    @if (!$book->isBookAuthor())
+                        <div class="mt-3 col-12 col-md-auto">
+                            <h6 class="mt-3 mb-3">Hai giá acquistato questo libro</h6>
+                        </div>
+                    @endif
+                @endif
+            @endauth
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center pt-5">
             <div class="col-12 col-lg-5">
                 <div class="card-custom-glass card-show-height align-items-center padding-custom-20y-30x">
                     <h2 class="text-center">Vuoi lasciare una recensione?</h2>

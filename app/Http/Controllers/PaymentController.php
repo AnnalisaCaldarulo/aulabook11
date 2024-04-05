@@ -25,7 +25,7 @@ class PaymentController extends Controller
         if ($book->price == 0) {
             $purchasedBook->payment_status = 'success';
             $purchasedBook->save();
-            return redirect()->route('welcome')->with('message', 'Aggiunto alla libreria con successo');
+            return redirect()->route('homepage')->with('message', 'Aggiunto alla libreria con successo');
         }
 
         //altrimenti: pagamento
@@ -74,7 +74,7 @@ class PaymentController extends Controller
             $message = "Pagamento effettuato con successo! Hai acquistato \" $title \", correttamente.";
         }
 
-        return redirect()->route('welcome')->with('message', $message);
+        return redirect()->route('homepage')->with('message', $message);
     }
 
 
@@ -91,6 +91,6 @@ class PaymentController extends Controller
             $message = 'Pagamento cancellato';
         }
 
-        return redirect()->route('welcome')->with('message', $message);
+        return redirect()->route('homepage')->with('message', $message);
     }
 }

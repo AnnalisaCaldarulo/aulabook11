@@ -64,6 +64,15 @@
                          <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                      @enderror
                  </div>
+
+                 <div class="mb-3">
+                     <label id="price" class="form-label">Inserisci il prezzo €</label>
+                     <input type="number" step="0.1" class="form-control @error('price') is-invalid @enderror"
+                         wire:model="price" for="price">
+                     @error('price')
+                         <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                     @enderror
+                 </div>
                  <div class="mb-3">
                      <label id="pdfId" class="form-label">Carica il tuo PDF</label>
                      <input type="file" class="form-control @error('pdf') is-invalid @enderror" wire:model="pdf"
@@ -146,7 +155,7 @@
                          {{-- </div> --}}
                      @endif
                      @if ($cover)
-                         <img src="{{Storage::url($cover)}}" alt="cover" class="img-fluid mx-auto">
+                         <img src="{{ Storage::url($cover) }}" alt="cover" class="img-fluid mx-auto">
                      @endif
                      {{-- ! codice prima della us 12
                          @if ($cover)

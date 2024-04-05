@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\PurchasedBook;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,46 +26,45 @@ class Book extends Model
         'pdf',
         'user_id',
         'category_id',
-        'cover'
+        'cover',
+        'price'
     ];
 
 
+    // public static function generateImage($image, $promptTokens)
+    // {
+    //     //OpenAI
+    //     $client = OpenAI::client(config('app.open_ai_key'));
+    //     try {
+    //         $response = $client->images()->create([
+    //             'prompt' => $promptTokens,
+    //             'n' => 1,
+    //             'size' => config('app.open_ai_size'),
+    //             'response_format' => 'b64_json',
+    //         ]);
+    //         // Decodifica l'immagine in base64 in una stringa binaria
+    //         $b64_img = base64_decode(strval($response->data[0]['b64_json']));
 
+    //         if ($image) {
+    //             Storage::disk('public')->delete($image);
+    //         }
 
-    public static function generateImage($image, $promptTokens)
-    {
-        //OpenAI
-        $client = OpenAI::client(config('app.open_ai_key'));
-        try {
-            $response = $client->images()->create([
-                'prompt' => $promptTokens,
-                'n' => 1,
-                'size' => config('app.open_ai_size'),
-                'response_format' => 'b64_json',
-            ]);
-            // Decodifica l'immagine in base64 in una stringa binaria
-            $b64_img = base64_decode(strval($response->data[0]['b64_json']));
+    //         // Crea un nuovo file PNG con la stringa binaria 
+    //         $image = 'upload/' . uniqid() . ".png";
 
-            if ($image) {
-                Storage::disk('public')->delete($image);
-            }
-
-            // Crea un nuovo file PNG con la stringa binaria 
-            $image = 'upload/' . uniqid() . ".png";
-
-            Storage::disk('public')->put($image, $b64_img);
-        } catch (\Exception $e) { //recupero errori generati dall'API
-            $message = $e->getMessage();
-            session()->flash('errorMessage', "$message");
-        }
-        return $image;
-    }
+    //         Storage::disk('public')->put($image, $b64_img);
+    //     } catch (\Exception $e) { //recupero errori generati dall'API
+    //         $message = $e->getMessage();
+    //         session()->flash('errorMessage', "$message");
+    //     }
+    //     return $image;
+    // }
 
     public function purchasedBooks(): HasMany
     {
         return $this->hasMany(PurchasedBook::class);
     }
-    
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -84,5 +84,36 @@ class Book extends Model
             return substr($this->description, 0, 30) . '...';
         }
         return $this->description;
+    }
+
+
+    public function isBookAuthor()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return $user->id == $this->user->id;
+    }
+
+    //Controllo se l'utente autenticato ha già acquistato il libro
+    public function isBookPurchased()
+    {
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        $userHasPurchasedThisBook = $user
+            ->purchasedBooks()
+            ->where('book_id', $this->id)
+            ->where('payment_status', 'success')
+            ->exists();
+
+        return $userHasPurchasedThisBook;
     }
 }

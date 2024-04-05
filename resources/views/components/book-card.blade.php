@@ -10,4 +10,20 @@
         @endif
         <a href="{{ route('book.show', compact('book')) }}" class="btn btn-primary w-100">Vedi di piú</a>
     </div>
+
+    <div class="card-footer">
+        <div class="media">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="my-0 text-white">{{ $book->user->name }}</h6>
+                <div class="mt-2">
+                    @if ($book->price == 0)
+                        <p class="fs-3 fw-bold">Free</p>
+                    @else
+                        <p class="fs-3 fw-bold">€ {{ $book->price }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

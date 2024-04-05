@@ -31,6 +31,9 @@ class CreateBook extends Component
     public  $didacticsId, $nonFictionId;
     public $step = 1;
 
+    #[Validate('required|min:0|numeric')]
+    public $price;
+
     protected $queryString = ['step'];
 
     public $styles = [
@@ -61,7 +64,8 @@ class CreateBook extends Component
         return [
             'title' => 'titolo',
             'description' => 'descrizione',
-            'pdf' => 'file'
+            'pdf' => 'file',
+            'price' => 'prezzo'
         ];
     }
 
@@ -84,6 +88,7 @@ class CreateBook extends Component
                 'description' => 'required',
                 'pdf' => 'required',
                 'selectedCategory' => 'required',
+                'price' => 'required|min:0|numeric',
             ], $this->messages());
 
             $this->step++;
@@ -176,7 +181,8 @@ class CreateBook extends Component
                 'pdf' => $this->pdf->store('public/files'),
                 'user_id' => Auth::user()->id,
                 'category_id' => $this->selectedCategory,
-                'cover' => $this->cover ?? 'header-image.png'
+                'cover' => $this->cover ?? 'header-image.png',
+                'price' => $this->price,
             ]
         );
         return redirect()->route('homepage')->with('message', 'eBook inserito correttamente');
