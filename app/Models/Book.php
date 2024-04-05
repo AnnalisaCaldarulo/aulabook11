@@ -6,6 +6,7 @@ use OpenAI;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\PurchasedBook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,9 +24,11 @@ class Book extends Model
         'description',
         'pdf',
         'user_id',
-        'category_id', 
+        'category_id',
         'cover'
     ];
+
+
 
 
     public static function generateImage($image, $promptTokens)
@@ -57,7 +60,11 @@ class Book extends Model
         return $image;
     }
 
-
+    public function purchasedBooks(): HasMany
+    {
+        return $this->hasMany(PurchasedBook::class);
+    }
+    
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

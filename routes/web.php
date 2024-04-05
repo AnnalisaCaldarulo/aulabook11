@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 
@@ -18,3 +19,8 @@ Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.
 Route::get('/index/book/category/{category}', [BookController::class, 'indexCategory'])->name('book.category');
 //commenti
 Route::post('/books/{book}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+
+//pagamento
+Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
+Route::get('/checkout/success/{purchasedBook}', [PaymentController::class, 'success'])->name('payment.success');
+Route::get('/checkout/cancel/{purchasedBook}', [PaymentController::class, 'cancel'])->name('payment.cancel');

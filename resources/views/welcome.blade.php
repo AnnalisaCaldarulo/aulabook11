@@ -1,4 +1,10 @@
 <x-layouts.layout>
+
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
     <header class="container my-5 py-5">
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-lg-6 col-xl-5 order-2 order-lg-1 text-center text-lg-start">
