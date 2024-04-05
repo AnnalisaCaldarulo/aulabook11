@@ -34,14 +34,14 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-8 mt-5">
-                    {{-- <form method="POST" action="{{ route('response.review', compact('book')) }}" class=" w-100"> --}}
+                    <form method="POST" action="{{ route('response.review', compact('book')) }}" class=" w-100">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="review-label">Recensione</label>
                             <textarea name="content" id="review-label" cols="50" class="form-control" placeholder="Recensisci l'ebook"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Invia recensione</button>
-                    {{-- </form> --}}
+                    </form>
                 </div>
             @empty
                 <h2 class="text-center">

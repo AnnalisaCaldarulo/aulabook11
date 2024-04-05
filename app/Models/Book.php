@@ -4,6 +4,7 @@ namespace App\Models;
 
 use OpenAI;
 use App\Models\User;
+use App\Models\Review;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\PurchasedBook;
@@ -32,6 +33,17 @@ class Book extends Model
         'review_status',
     ];
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function setAccepted($value)
+    {
+        $this->is_published = $value;
+        $this->save();
+        return true;
+    }
 
     // public static function generateImage($image, $promptTokens)
     // {

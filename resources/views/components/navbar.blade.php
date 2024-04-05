@@ -61,7 +61,9 @@
                                 <a class="nav-link" href="{{ route('revisor.index') }}">Zona Revisore</a>
                             </li>
                         @endif
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('user.profile') }}">Profilo</a>
+                        </li>
                     </ul>
                 </li>
             @endauth
