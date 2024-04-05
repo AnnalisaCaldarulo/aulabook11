@@ -139,12 +139,19 @@
                          id="idMainColor" aria-describedby="" wire:model="mainColor">
                  </div>
                  <div class="d-flex justify-content-center">
-                     <div wire:loading wire:target="generate">
+                     @if ($isGeneratingImage)
+                         {{-- <div wire:loading wire:target="generate"> --}}
                          <x-loader />
-                     </div>
-                     @if ($cover)
-                         <img src="{{ Storage::url($cover) }}" alt="cover">
+                         <span wire:poll.visible="checkGeneratedImage"></span>
+                         {{-- </div> --}}
                      @endif
+                     @if ($cover)
+                         <img src="{{Storage::url($cover)}}" alt="cover" class="img-fluid mx-auto">
+                     @endif
+                     {{-- ! codice prima della us 12
+                         @if ($cover)
+                         <img src="{{ Storage::url($cover) }}" alt="cover">
+                     @endif --}}
                  </div>
                  <div class="row justify-content-center">
                      <div class="col-12 col-lg-10 pt-2 d-flex justify-content-center">
