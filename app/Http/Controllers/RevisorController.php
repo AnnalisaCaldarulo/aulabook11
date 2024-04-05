@@ -8,12 +8,17 @@ use App\Mail\BecomeRevisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Artisan;
 
 class RevisorController extends Controller
 {
-    public function makeRevisor(User $user)
+    public function makeRevisor(User $user, $hash)
     {
+
+        if (Crypt::decrypt($hash) != $user->id) {
+            return redirect()->back()->with('message', 'Qualcosa è andato storto!');
+        }
         Artisan::call('aulabook:makeUserRevisor', ['email' => $user->email]);
         return redirect(route('homepage'))->with('message', 'Complimenti, sei diventato Revisore!');
     }
