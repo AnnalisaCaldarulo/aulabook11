@@ -33,8 +33,8 @@
                                     <td>{{ $book->getDescriptionSubstring() }}</td>
                                     <td class="d-flex justify-content-center">
                                         @if ($book->cover)
-                                            <img src="{{ Storage::url($book->cover) }}" alt="" width="95%" height="95%"
-                                                class="rounded-circle ">
+                                            <img src="{{ Storage::url($book->cover) }}" alt="" width="95%"
+                                                height="95%" class="rounded-circle ">
                                         @else
                                             immagine
                                         @endif
@@ -43,6 +43,16 @@
                                         <div class="d-flex justify-content-center">
                                             <a href="{{ route('book.viewPdf', compact('book')) }} class="btn
                                                 btn-primary"><i class="bi bi-eye"></i></a>
+
+                                            <a href="{{ route('book.edit', compact('book')) }}"
+                                                class="btn btn-warning"><i class="bi bi-pencil"></i></a>
+                                            <a onclick="event.preventDefault(); document.querySelector('#form_delete_{{ $book->id }}').submit();"
+                                                class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                            <form method="POST" id="form_delete_{{ $book->id }}"
+                                                action="{{ route('book.destroy', compact('book')) }}">
+                                                @method('delete')
+                                                @csrf
+                                            </form>
                                         </div>
                                     </td>
 
@@ -188,8 +198,8 @@
                                     </td>
                                     <td class="ps-3">
                                         <div class="dropdown">
-                                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
+                                            <button class="btn dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots"></i>
                                             </button>
                                             <ul class="dropdown-menu bg-custom-dark p-2">

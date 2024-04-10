@@ -21,7 +21,7 @@ class CreateBook extends Component
     public $title;
     #[Validate('required')]
     public $description;
-    #[Validate('required|file|mimes:pdf')]
+    #[Validate('required_if:oldPdf,!=,null|file|mimes:pdf|nullable')]
     public $pdf;
     #[Validate('required')]
     public $selectedCategory;
@@ -32,6 +32,8 @@ class CreateBook extends Component
     public $promptToken,  $book, $style, $subject, $topic, $otherDetails, $mainColor;
     public  $didacticsId, $nonFictionId;
     public $step = 1;
+
+    public $editMode;
 
     #[Validate('required|min:0|numeric')]
     public $price;
@@ -91,7 +93,7 @@ class CreateBook extends Component
             $this->validate([
                 'title' => 'required',
                 'description' => 'required',
-                'pdf' => 'required',
+                'pdf' => 'required_if:oldPdf,!=,null',
                 'selectedCategory' => 'required',
                 'price' => 'required|min:0|numeric',
             ], $this->messages());
@@ -178,31 +180,67 @@ class CreateBook extends Component
     {
         // Validate
         $this->validate();
-        // Creazione book
-        $book = Book::create(
-            [
-                'title' => $this->title,
-                'description' => $this->description,
-                'pdf' => $this->pdf->store('public/files'),
-                'user_id' => Auth::user()->id,
-                'category_id' => $this->selectedCategory,
-                'cover' => $this->cover ?? 'header-image.png',
-                'price' => $this->price,
-                'is_published' => !$this->askReview,
-                'review_status' => $this->askReview ? 'pending' : 'completed',
-            ]
-        );
+        //modifica book
 
+        if ($this->editMode) {
+            // Aggiornamento book
+            $this->book->update(
+                [
+                    'title' => $this->title,
+                    'description' => $this->description,
+                    'pdf' => $this->pdf ? $this->pdf->store('public/files') : $this->book->pdf,
+                    'cover' => $this->cover ? $this->cover : $this->book->cover,
+                    'is_published' => !$this->askReview,
+                    'price' => $this->price,
+                    'category_id' => $this->selectedCategory,
+                    'review_status' => $this->askReview ? 'pending' : 'completed',
+                ]
+            );
+
+            $message = "Libro modificato correttamente";
+        } else {
+            // Creazione book
+            $book = Book::create(
+                [
+                    'title' => $this->title,
+                    'description' => $this->description,
+                    'pdf' => $this->pdf->store('public/files'),
+                    'user_id' => Auth::user()->id,
+                    'category_id' => $this->selectedCategory,
+                    'cover' => $this->cover ?? 'header-image.png',
+                    'price' => $this->price,
+                    'is_published' => !$this->askReview,
+                    'review_status' => $this->askReview ? 'pending' : 'completed',
+                ]
+            );
+
+            $message = "Libro creato correttamente";
+        }
         if ($this->askReview) {
             Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($book));
             return redirect()->route('homepage')->with('message', 'Libro inviato per la recesione correttamente');
         }
-        return redirect()->route('homepage')->with('message', 'eBook inserito correttamente');
+        session()->flash('message', $message);
     }
 
-    public function mount()
+    public function mount($book = null)
     {
         $this->step = 1;
+
+
+        if ($book) {
+            $this->editMode = true;
+
+            $this->book = $book;
+            $this->title = $book->title;
+            $this->oldTitle = $book->title;
+            $this->description = $book->description;
+            $this->cover = $book->cover;
+            $this->selectedCategory = $book->category->id;
+            $this->price = $book->price;
+            $this->oldPdf = $book->pdf;
+        }
+
         $didactics = Category::where('name', 'Didattica')->first();
         $nonFiction = Category::where('name', 'Saggistica')->first();
         $this->didacticsId = $didactics->id;

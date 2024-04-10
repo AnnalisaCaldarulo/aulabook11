@@ -91,9 +91,10 @@ class BookController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit(Book $book)
     {
-        //
+        return view('book.edit', compact('book'));
     }
 
     /**
@@ -109,6 +110,14 @@ class BookController extends Controller implements HasMiddleware
      */
     public function destroy(Book $book)
     {
-        //
+        // if($book->cover){
+        //     Storage::delete($book->cover);
+        // }
+        // if($book->pdf ){
+        //     Storage::delete($book->pdf);
+        // }
+        $book->delete();
+
+        return redirect()->route('user.profile')->with('message', 'Libro cancellato con successo!');
     }
 }

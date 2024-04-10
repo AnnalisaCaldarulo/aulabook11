@@ -15,6 +15,9 @@
              {{ session('error') }}
          </div>
      @endif
+     <h1 class="text-center my-3">
+         {{ $editMode ? "Modifica il libro : $oldTitle" : 'Pubblica il tuo libro' }}
+     </h1>
      <nav>
          <div class="nav nav-tabs" id="nav-tab" role="tablist">
              <button class="nav-link {{ $step === 1 ? 'active' : '' }} " id="nav-home-tab" data-bs-toggle="tab"
@@ -60,7 +63,7 @@
                              <option value="{{ $category->id }}">{{ $category->name }}</option>
                          @endforeach
                      </select>
-                     @error('pdf')
+                     @error('category')
                          <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                      @enderror
                  </div>
@@ -80,6 +83,12 @@
                      @error('pdf')
                          <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                      @enderror
+
+                     <input type="hidden" wire:model="oldPdf">
+                     @if ($editMode)
+                         <a class="text-center" href="{{ route('book.download', compact('book')) }}">Scarica la
+                             versione precedente</a>
+                     @endif
                  </div>
              </form>
          </div>
