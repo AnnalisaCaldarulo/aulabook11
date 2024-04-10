@@ -39,6 +39,9 @@ Route::get('/diventa-revisore', [RevisorController::class, 'becomeRevisor'])->mi
 Route::get('/revisor/home', [RevisorController::class, 'index'])->middleware('isRevisor')->name('revisor.index');
 Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name('response.review');
 Route::get("/search/book", [BookController::class, 'searchBooks'])->name('search');
+Route::get('/filter/book', [BookController::class, 'indexFilters'])->name('book.indexFilters'); 
+
+
 
 Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
 

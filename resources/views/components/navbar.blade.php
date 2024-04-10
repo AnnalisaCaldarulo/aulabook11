@@ -20,17 +20,27 @@
                         Categorie
                     </a>
                     <ul class="dropdown-menu">
-                        @foreach ($categories as $category)
+                        {{-- @foreach ($categories as $category)
                             <li class="nav-item">
                             <li class="nav-item">
                                 <form action="{{ route('book.category', $category) }}" method="GET">
                                     <button type="submit" class="nav-link">{{ $category->name }}</button>
                                 </form>
                             </li>
+                        @endforeach --}}
+
+                        @foreach ($categories as $category)
+                            <li class="nav-item">
+                            <li class="nav-item">
+                                <form action="{{ route('book.indexFilters') }}" method="GET">
+                                    <input type="hidden" name="categoryChecked[0]" value="{{ $category->id }}">
+                                    <button type="submit" class="nav-link">{{ $category->name }}</button>
+                                </form>
+                            </li>
+                        @endforeach
                 </li>
-                @endforeach
             </ul>
-            </li>
+
             @guest
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('register') }}">Registrati</a>
@@ -86,7 +96,7 @@
             </li>
             </ul>
 
-            <form class="d-flex" method="GET" action="{{ route('search') }}">
+            <form class="d-flex" method="GET" action="{{ route('book.indexFilters') }}">
                 <input name="searched" class="form-control me-2" type="search" placeholder="Search"
                     aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

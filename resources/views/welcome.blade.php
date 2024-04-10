@@ -24,6 +24,11 @@
 
     <div class="container my-5">
         <div class="row justify-content-center">
+
+            <h2 class="display-3 text-center font-bold">
+                Gli Ultimi libri
+            </h2>
+            <a href="{{ route('book.indexFilters') }}" class="btn btn-primary ms-3">Sfoglia tutti i libri</a>
             @forelse($books as $book)
                 <div class="col-12 col-md-4 d-flex justify-content-center mt-3">
                     <x-book-card :book="$book" />

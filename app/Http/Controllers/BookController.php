@@ -22,6 +22,10 @@ class BookController extends Controller implements HasMiddleware
     }
 
 
+    public function indexFilters()
+    {
+        return view('book.indexFilter');
+    }
     public function searchBooks(Request $request)
     {
 
