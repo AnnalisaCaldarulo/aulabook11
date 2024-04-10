@@ -17,7 +17,12 @@
                 </div>
             @empty
                 <h1 class="text-center">
-                    Non é stato pubblicato ancora nessun libro
+
+                    @if (Route::currentRouteName() == 'books.search')
+                        Nessuna corrispondenza trovata
+                    @else
+                        Non é stato pubblicato ancora nessun libro
+                    @endif
                 </h1>
             @endforelse
         </div>

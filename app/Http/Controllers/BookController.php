@@ -22,7 +22,12 @@ class BookController extends Controller implements HasMiddleware
     }
 
 
+    public function searchBooks(Request $request)
+    {
 
+        $books = Book::search($request->searched)->where('is_published', true)->paginate(10);
+        return view('book.index', compact('books'));
+    }
 
     public function publish(Book $book)
     {

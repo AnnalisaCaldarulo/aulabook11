@@ -8,11 +8,13 @@
         "php": "^8.2",
         "laravel/fortify": "^1.21",
         "laravel/framework": "^11.0",
+        "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "openai-php/client": "^0.8.4",
         "stripe/stripe-php": "^13.17",
-        "symfony/process": "^7.0"
+        "symfony/process": "^7.0",
+        "teamtnt/laravel-scout-tntsearch-driver": "^14.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

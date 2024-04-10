@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
 
     protected $fillable =
@@ -129,5 +130,20 @@ class Book extends Model
             ->exists();
 
         return $userHasPurchasedThisBook;
+    }
+
+
+    public function toSearchableArray()
+    {
+        $category = $this->category;
+        $user = $this->user->name;
+        $array = [
+            "id" => $this->id,
+            "title" => $this->title,
+            "body" => $this->description,
+            "category" => $category,
+            "user" => $user,
+        ];
+        return $array;
     }
 }
