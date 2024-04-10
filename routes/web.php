@@ -8,6 +8,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RevisorController;
+use App\Http\Middleware\CheckIfUserCanDownload;
 
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 
@@ -20,7 +21,7 @@ Route::get('/edit/book/{book}', [BookController::class, 'edit'])->name('book.edi
 
 
 //download
-Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->name('book.download');
+Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->middleware('checkDownload')->name('book.download');
 //visua
 Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.viewPdf');
 Route::get('/index/book/category/{category}', [BookController::class, 'indexCategory'])->name('book.category');
@@ -39,10 +40,10 @@ Route::get('/diventa-revisore', [RevisorController::class, 'becomeRevisor'])->mi
 Route::get('/revisor/home', [RevisorController::class, 'index'])->middleware('isRevisor')->name('revisor.index');
 Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name('response.review');
 Route::get("/search/book", [BookController::class, 'searchBooks'])->name('search');
-Route::get('/filter/book', [BookController::class, 'indexFilters'])->name('book.indexFilters'); 
+Route::get('/filter/book', [BookController::class, 'indexFilters'])->name('book.indexFilters');
 
 
-Route::get("/language/{lang}",[PublicController::class,"setLanguage"])->name("setLocale");
+Route::get("/language/{lang}", [PublicController::class, "setLanguage"])->name("setLocale");
 
 
 

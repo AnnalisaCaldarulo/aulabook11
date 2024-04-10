@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckIfUserCanDownload;
 use App\Http\Middleware\IsRevisor;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\SetLocaleMiddleware;
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [SetLocaleMiddleware::class]);
         $middleware->alias([
-            'isRevisor' => IsRevisor::class
+            'isRevisor' => IsRevisor::class,
+            'checkDownload' => CheckIfUserCanDownload::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
