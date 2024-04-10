@@ -96,6 +96,23 @@
             </li>
             </ul>
 
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="bi bi-globe-americas"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end lang-menu m-0 p-0">
+                        <li class="nav-item ms-0 dropdown-item px-0">
+                            <x-locale lang='it' nation='it' />
+                        </li>
+                        <li class="nav-item ms-0 dropdown-item px-0">
+                            <x-locale lang='en' nation='en' />
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
             <form class="d-flex" method="GET" action="{{ route('book.indexFilters') }}">
                 <input name="searched" class="form-control me-2" type="search" placeholder="Search"
                     aria-label="Search">

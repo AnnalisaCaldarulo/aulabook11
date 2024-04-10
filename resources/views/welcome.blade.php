@@ -26,7 +26,7 @@
         <div class="row justify-content-center">
 
             <h2 class="display-3 text-center font-bold">
-                Gli Ultimi libri
+                {{ __('ui.allBooks') }}
             </h2>
             <a href="{{ route('book.indexFilters') }}" class="btn btn-primary ms-3">Sfoglia tutti i libri</a>
             @forelse($books as $book)

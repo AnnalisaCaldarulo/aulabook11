@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "openai-php/client": "^0.8.4",
+        "outhebox/blade-flags": "^1.5",
         "stripe/stripe-php": "^13.17",
         "symfony/process": "^7.0",
         "teamtnt/laravel-scout-tntsearch-driver": "^14.0"

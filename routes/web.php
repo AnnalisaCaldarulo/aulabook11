@@ -42,6 +42,9 @@ Route::get("/search/book", [BookController::class, 'searchBooks'])->name('search
 Route::get('/filter/book', [BookController::class, 'indexFilters'])->name('book.indexFilters'); 
 
 
+Route::get("/language/{lang}",[PublicController::class,"setLanguage"])->name("setLocale");
+
+
 
 Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
 
