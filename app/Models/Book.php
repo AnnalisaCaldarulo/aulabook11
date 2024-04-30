@@ -32,6 +32,7 @@ class Book extends Model
         'price',
         'is_published',
         'review_status',
+        // 'cover_url'
     ];
 
     public function reviews()
@@ -55,8 +56,9 @@ class Book extends Model
     //             'prompt' => $promptTokens,
     //             'n' => 1,
     //             'size' => config('app.open_ai_size'),
-    //             'response_format' => 'b64_json',
+    //             'response_format' => 'url',
     //         ]);
+    //         //dd($response->data[0]->url); //struttura oggetto interno
     //         // Decodifica l'immagine in base64 in una stringa binaria
     //         $b64_img = base64_decode(strval($response->data[0]['b64_json']));
 
@@ -74,6 +76,7 @@ class Book extends Model
     //     }
     //     return $image;
     // }
+
 
     public function purchasedBooks(): HasMany
     {

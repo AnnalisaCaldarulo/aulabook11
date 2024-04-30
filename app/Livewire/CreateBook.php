@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use OpenAI;
 use App\Models\Book;
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Category;
 use App\Mail\ReviewRequest;
@@ -134,12 +136,12 @@ class CreateBook extends Component
             'subject' => 'required',
         ]);
 
-        $default = config('app.imagegen_default_prompt');
+        // $default = config('app.imagegen_default_prompt');
         // $this->promptToken = "$default,
         // use style: $this->style,
         // the book subject is: $this->subject,
-        // the book main ambience is: $this->ambience,
         // the other details here: $this->otherDetails,
+        // the book main ambience is: $this->ambience,
         // the book main color is: $this->mainColor";
 
         $this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
@@ -159,6 +161,33 @@ class CreateBook extends Component
         dispatch(new GenerateOpenAiCoverImageJob($this->generatedImage));
         $this->isGeneratingImage = true;
     }
+
+
+    // public  function generateImage2()
+    // {
+
+    //     $this->promptToken = "
+    //     use style: $this->style,
+    //     the book subject is: $this->subject,
+    //     the other details here: $this->otherDetails,
+    //     the book main color is: $this->mainColor";
+    //     //OpenAI
+    //     $client = OpenAI::client(config('app.open_ai_key'));
+    //     try {
+    //         $response = $client->images()->create([
+    //             'prompt' => $this->promptToken,
+    //             'n' => 1,
+    //             'size' => config('app.open_ai_size'),
+    //             'response_format' => 'b64_json',
+    //         ]);
+    //         // $this->cover = $response->data[0]->url;
+    //         // $book = Book::find(7);
+    //     } catch (\Exception $e) { //recupero errori generati dall'API
+    //         $message = $e->getMessage();
+    //         session()->flash('errorMessage', "$message");
+    //         $this->cover = null;
+    //     }
+    // }
 
     public function checkGeneratedImage()
     {
@@ -207,7 +236,8 @@ class CreateBook extends Component
                     'pdf' => $this->pdf->store('public/files'),
                     'user_id' => Auth::user()->id,
                     'category_id' => $this->selectedCategory,
-                    'cover' => $this->cover ?? 'header-image.png',
+                    'cover' => $this->cover,
+                    // 'cover_url' => $this->cover,
                     'price' => $this->price,
                     'is_published' => !$this->askReview,
                     'review_status' => $this->askReview ? 'pending' : 'completed',
@@ -217,7 +247,10 @@ class CreateBook extends Component
             $message = "Libro creato correttamente";
         }
         if ($this->askReview) {
-            Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($book));
+            $revisors = User::where('role_id', 2)->where('id', '<>', Auth::id())->get();
+            foreach ($revisors as $revisor) {
+                Mail::to($revisor->email)->queue(new ReviewRequest($book));
+            }
             return redirect()->route('homepage')->with('message', 'Libro inviato per la recesione correttamente');
         }
         session()->flash('message', $message);

@@ -158,13 +158,13 @@
                  </div>
                  <div class="d-flex justify-content-center">
                      @if ($isGeneratingImage)
-                         {{-- <div wire:loading wire:target="generate"> --}}
-                         <x-loader />
-                         <span wire:poll.visible="checkGeneratedImage"></span>
-                         {{-- </div> --}}
+                         <div wire:loading wire:target="generate">
+                             <x-loader />
+                             <span wire:poll.visible="checkGeneratedImage"></span>
+                         </div>
                      @endif
                      @if ($cover)
-                         <img src="{{ Storage::url($cover) }}" alt="cover" class="img-fluid mx-auto">
+                         <img src="{{ $cover }}" alt="cover" class="img-fluid mx-auto">
                      @endif
                      {{-- ! codice prima della us 12
                          @if ($cover)
